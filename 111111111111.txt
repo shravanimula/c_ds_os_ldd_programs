@@ -1,0 +1,13 @@
+I worked at the customer location 3 months, at the they assigned 4 tasks for me .
+1) Test the FP16 performance .
+2)Identifies the issue in the rederdoc frame by using rederdoc tool.
+3)I worked on the RGP profile.
+upto this i did all the tasks what they are assigned.
+4)MBCP validation this one i did 50% only.
+I worked on the gopher setup and run the vulakn application.
+
+
+I worked at the customer location ( november - january) . At the time i sended status report to my lead (Anuradha ) and I maintend effective logging in the office.Now I am at bench and sending status report to manager(Kalyani ) and maintaing the effective loggin.
+
+Yes, I learn vulakn pipeline ,FP16 performance and how to debug the issues in renderdoc.
+I attended the graphics session by santhosh and LDD session by Girish.what ever they given assesment i did up to the mark.

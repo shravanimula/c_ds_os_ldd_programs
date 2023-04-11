@@ -1,0 +1,146 @@
+
+What is linux device driver :
+
+A device driver is designed for a specific piece of hardware.The kernel uses it to communicate with that piece of hardware without having to know any details of how the hardware works.
+
+A device driver is a piece of code that configures and manages a device. 
+• The device driver code knows, how to configure the device, sending data to the 
+device, and it knows how to process requests which originate from the device. 
+• When the device driver code is loaded into the operating system such as Linux, it 
+exposes interfaces to the user-space so that the user application can communicate 
+with the device. 
+• Without the device driver, the OS/Application will not have a clear picture of how to 
+deal with a device
+
+
+What is device number, major number, minor number, magic number:
+
+
+Type or magic number (type) : The Magic Number is a unique number or character that will differentiate our set of ioctl calls from the other ioctl calls.  some times the major number for the device is used here.
+
+A device number identifies a particular device and minor node in the device tree. The dev_t parameter that is required in many DDI/DKI routines is this device number.
+
+Major number
+Traditionally, the major number identifies the driver associated with the device. A major number can also be shared by multiple device drivers. See /proc/devices to find out how major numbers are assigned on a running Linux instance.
+
+Minor Number
+The major number is to identify the corresponding driver. Many devices may use the same major number. So we need to assign the number to each device that is using the same major number. So, this is a minor number. In other words, The device driver uses the minor number <minor> to distinguish individual physical or logical devices.
+
+
+The first versions of Linux used 16-bit numbers: the top eight were the “magic” number associated with the device, and the bottom eight were a sequential number, unique within the device. This happened because Linus was “clueless” (his own word); a better division of bitfields was conceived only later.
+
+
+Why we use __init and __exit
+
+This is the function that will execute first when the Linux device driver is loaded into the kernel. For example, when we load the driver using insmod, this function will execute. Please see below to know the syntax of this function.
+This is the function that will execute last when the Linux device driver is unloaded from the kernel. For example, when we unload the driver using rmmod, this function will execute. Please see below to know the syntax of this function.
+
+
+How device driver communicates with users pace:
+
+Decide the signal that you want to send.
+Register the user space application with the driver.
+Once something happened (in our example we used interrupts) send signals to userspace.
+Unregister the user space application when you have done with it.
+
+What are the api s required to register with VFS:
+
+cdev_init();
+cdev_add();
+
+for dynamically
+int allc_chrdev_region(dev_t *dev,unsigned baseminor,unsigned count,const char *name)
+*dev=>o/p parameter first assigned number,baseminor=>first of the requested range of minor numbers
+count=>number of minor number and char *name=>device driver
+
+What is the api to create major no and minor no.
+
+MKDEV(int major, int minor);
+
+MAJOR(dev_t dev);
+MINOR(dev_t dev);
+
+ int register_chrdev(unsigned int major, const char *name,
+      struct file_operations *fops);
+int register_chrdev_region(dev_t first, unsigned int count, char *name);
+
+int alloc_chrdev_region(dev_t *dev, unsigned int firstminor, unsigned int count, char *name);
+
+Difference between mod probe and insmod:
+
+insmod: Used to load a module
+modprobe: Much same way as insmod, but also loads any other modules that are required by the module that you want to load.
+Although you’ll still need insmod when loading your own modules from the current directory, because modprobe looks only in the standard installed module directories
+
+
+What is interrupt,  how it works,
+
+What is ISR.
+
+What is probe and how it works
+What is the probe functinality:
+The probe() function
+The probe() function is a part of the struct i2c_driver structure, and is executed anytime, once an I2C device is instantiated. It is responsible for the following tasks:
+
+Check whether the device is the one you expected
+Check whether your I2C bus controller of the SoC supports the functionality needed by your device, using the i2c_check_functionality function
+Initialize the device
+Set up device-specific data
+Register the appropriate kernel framework
+The probe function's prototype is as follows:
+
+static int foo_probe(struct i2c_client *client, const struct i2c_device_id *id) 
+
+What is device enumeration :
+Devices. Enumeration APIs find devices internally connected to the system, externally connected, or nearby over wireless or networking protocols and get information about them. It also shows how to pair wireless and networking devices with the system.
+
+
+Difference between interrupt and Exception :
+Exceptions and interrupts are unexpected events that disrupt the normal flow of instruction execution. An exception is an unexpected event from within the processor. An interrupt is an unexpected event from outside the processor. 
+
+What is platform device, platform device driver and device  tree 
+
+Difference between device driver and platform driver :
+Platform driver is for those devices that are on chip. Normal device driver are for those that are interfaced to the processor chip.
+
+
+What is GPIO, What are the things required to use gpio pin
+
+What is I2C, how it works, where we use:
+
+I2C stands for the inter-integrated controller. This is a serial communication protocol that can connect low-speed devices. It is a master-slave communication in which we can connect and control multiple slaves from a single master. In this, each slave device has a specific address.
+Where do we use I2C?
+I2C is used to connect devices like microcontrollers, EEPROMs, I/O interfaces, and other peripheral devices in an embedded system. A microcontroller is often used as the master device, and other peripheral devices are used as slave devices.
+
+What is mean by bus arbitration 
+
+Arbitration of the SDA line can ensure that the I2C bus system communicates normally and data is not lost when multiple master nodes attempt to control the bus at the same time. The bus system allows only one master node to continue to occupy the bus through arbitration.
+
+During the transfer, the masters constantly monitor SDA and SCL. If one of them detects that SDA is low when it should actually be high, it assumes that another master is active and immediately stops its transfer. This process is called arbitration.
+
+What is mean by clock stretching
+Clock stretching is one of the most powerful features of the I2C protocol. Clock stretching means that holding the clock to 0 or ground level. The moment clock is kept low, then the whole I2C interface pauses until the clock is given up to its normal operating level
+
+An I2C master controls the clock speed and provides SCL on the line. It is possible for the slave device to “stretch” or hold the clock and alt the data or commands transmission from the master. Clock stretching is mainly used to hold the master device when the slave device is swamped.
+
+How master identify slave device:
+Each slave device has a unique address to identify it on the bus. These addresses are pre-defined and are normally provided in the datasheet of the device. To identify multiple devices on the same bus, you can set the least significant bits. In standard I2C, the slave address is 7-bits
+What is sysfs and procfs
+
+What is VFS:
+The Virtual Filesystem (also known as VFS) is a component of the kernel that handles all system calls related to files and file systems. VFS is a generic interface between the user and a particular file system. This abstraction simplifies the implementation of file systems and provides an easier integration of multiple file systems. This way, the implementation of a file system is accomplished by using the API provided by the VFS, and the generic hardware and I/O subsystem communication parts are handled by VFS.
+
+How communication will happen between user space to kernel space
+
+What is IOCTL, why we use IOCTL:
+The ioctl function is useful for implementing a device driver to set the configuration on the device. e.g. a printer that has configuration options to check and set the font family, font size etc. ioctl could be used to get the current font as well as set the font to a new one. A user application uses ioctl to send a code to a printer telling it to return the current font or to set the font to a new one.
+
+Explain linux boot  sequence 
+
+Why we use dtb  and uenv.txt in boot images 
+
+Synchronization techniques 
+Semaphore vs Mutex
+Spinlock, critical section, race condition 
+
+What is kconfigs and defconfig
