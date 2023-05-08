@@ -1,0 +1,10 @@
+list=[1,2,3,4,5,6,7,8]
+print(list)
+list.remove(3)
+print(list)
+list.pop(4)
+print(list)
+list.pop()
+print(list)
+list.clear()
+print(list)
