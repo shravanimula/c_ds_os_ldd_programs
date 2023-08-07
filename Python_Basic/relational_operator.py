@@ -1,0 +1,8 @@
+a=int(input('enter the a number:'))
+b=int(input('enter the b number:'))
+print('is assignment :',a==b)
+print('not equal:',a!=b)
+print('grater than:',a > b)
+print('less than :',a < b)
+print('graterthan equal:',a >= b)
+print(' lessthan equal:',a <= b)
