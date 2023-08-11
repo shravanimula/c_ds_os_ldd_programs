@@ -1,0 +1,8 @@
+tuple=('aaaa','bbb','ccccc','ddddd')
+print(tuple)
+print('conver tuple to list')
+l=list(tuple)
+print(l)
+print("convert the list to set:")
+set1=set(l)
+print(set1)
